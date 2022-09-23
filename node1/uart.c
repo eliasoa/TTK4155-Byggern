@@ -1,5 +1,6 @@
 #include <avr/io.h>
 #include "uart.h"
+#include <stdio.h>
 
 
 void UART_Init( void )
@@ -39,5 +40,5 @@ unsigned char UART_Receive()
 
 void UART_printf_link()
 {
-	fdevopen(UART_Transmit, UART_Receive);
+	fdevopen((int (*)(char, FILE*))UART_Transmit, (int (*)(FILE*))UART_Receive);
 }
