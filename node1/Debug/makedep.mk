@@ -8,6 +8,8 @@ main.c
 
 oled.c
 
+oled_menu.c
+
 uart.c
 
 xmem.c
