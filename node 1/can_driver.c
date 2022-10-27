@@ -12,11 +12,14 @@ void can_init( void ){
 	
 	DDRB |= (1 << PB3);
 	
-	mcp2515_write(MCP_CANINTE,0b00000011);		// Enable interrupt on Recieve buffer 0 and 1
+	mcp2515_write(MCP_CANINTE,0b00000011);		// Enable interrupt on Receive buffer 0 and 1
 	mcp2515_write(MCP_RXB0CTRL, 0xFF);			// Turn filters off
 	mcp2515_write(MCP_RXB1CTRL, 0xFF);			// Turn filters off
-	mcp2515_write(MCP_CANCTRL,MODE_LOOPBACK);	// Loopback
+	mcp2515_write(MCP_CANCTRL,MODE_NORMAL);		// Normal
 	
+	mcp2515_write(MCP_CNF1, 0x3); // BRP = 3 -> Baudrate 125 kHz Tq = 500
+	mcp2515_write(MCP_CNF2, 0b00110001); // PS1 = 6 and PRSEG = 1
+	mcp2515_write(MCP_CNF3, 0b00000101); // PS2 = 5 
 	
 	// TODO: Comment what these do
 	cli(); 
@@ -35,7 +38,10 @@ void can_init( void ){
 	{
 				printf (" MCP2515 is IN loopback mode after init !\r\n");
 	}
-	
+	if ( ( val & MODE_MASK ) == MODE_NORMAL )
+	{
+		printf (" MCP2515 is IN NORMAL mode after init !\r\n");
+	}	
 }
 
 

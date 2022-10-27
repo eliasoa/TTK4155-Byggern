@@ -72,7 +72,9 @@ int main(void)
 	can_send(test_struct);
 
 
-	while(1){}
+	while(1){
+		
+	}
 	
 
 }
