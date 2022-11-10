@@ -4,6 +4,7 @@
 #include "uart.h"
 #include "can_controller.h"
 #include "pwm_driver.h"
+#include "adc_driver.h"
 CAN_MESSAGE message;
 int main(  )
 {
@@ -12,16 +13,19 @@ int main(  )
 	configure_uart();
 	can_setup();
 	pwm_init();
+	uint16_t lol = 0;
+
+	adc_init();
 
 	
 
 
 	while(1){
 
-	int pos = message.data[1];
-	servo_get_pos(pos);
-
-
+	//int pos = message.data[1];
+	//servo_get_pos(pos);
+	printf("Read ADC: %d\t\n\r", adc_read());
+	printf("Score is: %d\t\n\r", ir_counter(adc_read()));
 	}
 
 }
@@ -40,6 +44,11 @@ void CAN0_Handler( void )
 		if(can_sr & CAN_SR_MB1)  //Mailbox 1 event
 		{
 			can_receive(&message, 1);
+			//printf("\n\r################### NEW EVENT BUF 1 #####################\n\r");
+			//printf("Got message with id: %d\t\n\r", message.id);
+			//printf("Got message with length: %d\t\n\r", message.data_length);
+			//printf("Got message with data:\t%d\n\r",message.data[0]);
+			//printf("Got message with data:\t%d\n\r",message.data[1]);
 			
 		}
 		else if(can_sr & CAN_SR_MB2) //Mailbox 2 event
